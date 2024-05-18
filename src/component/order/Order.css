@@ -37,7 +37,7 @@
     box-sizing: border-box;
 }
 
-.container {
+.order_container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -100,5 +100,19 @@
         text-align: center;
         align-items: center;
         justify-content: center;
+    }
+}
+
+@media (max-width: 445px) {
+    .program_control button  {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .switch_order button  {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
     }
 }
