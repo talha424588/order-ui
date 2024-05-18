@@ -61,7 +61,7 @@ const Product = () => {
   return (
     <div className="product_parent">
     
-      <div className="container product_container">
+      <div className="container product_container" style={{width:  currentSequenceOrders.length > 4 ?  "639.33px": "940.05px"}}>
         <div className="items">
           {currentSequenceOrders.map((order, index) => (
             <div key={index} className="card card-custom item">

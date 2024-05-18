@@ -14,12 +14,20 @@
 /* .product_container {
   width: 60% !important;
 } */
-.product_container {
+/* .product_container {
   width: 60% !important;
-  margin: auto; /* Center the container horizontally */
+  margin: auto; 
   display: flex;
   justify-content: start;
-  align-items: center; /* Center the items vertically */
+  align-items: center; 
+} */
+.product_container {
+  /* max-width: 940px; */
+  /* width: 100% !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .card-custom {
@@ -28,11 +36,19 @@
 }
 
 .items {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(4, minmax(142.86px, 1fr));
-  max-width: 142.86px;
-  width: 100%;
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.item
+{
+  /* max-width: 210.05px;
+  width: 100%; */
+  width: calc(25% - 30px);
+  max-height: 257.53px;
+  height: 100%;
 }
 
 
