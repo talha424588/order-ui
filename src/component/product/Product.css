@@ -1,0 +1,134 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.product_container {
+  width: 60% !important;
+}
+
+.card-custom {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+.items {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(20px, 1fr));
+}
+
+/* ins_container */
+
+.ins_container {
+  margin-top: 50px;
+}
+
+.ins_header h1 {
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 29.05px;
+  text-align: start;
+  margin-left: 40px;
+}
+
+.ins_section {
+  display: flex;
+  flex-direction: column;
+}
+
+.instruction_content {
+  background: #B4F1FF;
+  width: 503px;
+  height: 107px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+}
+
+.instruction_content span {
+  text-align: center;
+}
+
+
+/* Time Counter */
+.next_order_heading h1
+{
+  font-family: Inter;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 29.05px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+
+
+}
+.counter
+{
+  margin-top: 20px;
+}
+.counter span {
+  font-size: 16px;
+}
+
+.counter span{
+  font-weight: bold;
+  color: #000000;
+  border: 2px solid #7AB915;
+  border-radius: 3px;
+  font-size: 18px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+
+/* @media (max-width: 750px) {
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 2fr));
+  }
+  .ins
+  {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .ins h1{
+    text-align: center;
+    margin-left: -40px;
+  }
+
+}
+
+@media (max-width: 1024px) {
+  .items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 2fr));
+  }
+  .ins
+  {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  .ins h1{
+    text-align: center;
+    margin-left: -40px;
+  }
+  .timer_counter
+  {
+    margin-bottom: 20px;;
+  }
+
+} */
