@@ -1,42 +1,161 @@
+// import "./Product.css";
+// import React, { useEffect, useState } from "react";
+// import { useLocation } from "react-router-dom";
+// import Countdown from "react-countdown";
+
+// export const Product = () => {
+//   const [sequenceNumber, setSequenceNumber] = useState(0);
+//   const location = useLocation();
+//   const orders = location.state?.orders || [];
+
+//   // Group orders by sequence
+//   const groupedOrders = orders.reduce((acc, order) => {
+//     if (!acc[order.sequence]) {
+//       acc[order.sequence] = [];
+//     }
+//     acc[order.sequence].push(order);
+//     return acc;
+//   }, {});
+
+//   // Get current sequence orders and total packing time
+//   const currentSequenceOrders = groupedOrders[sequenceNumber + 1] || [];
+//   const totalPackingTimeSec = currentSequenceOrders.reduce((total, order) => {
+//     return total + parseInt(order.packing_time_sec, 10);
+//   }, 0);
+
+//   const [timerValue, setTimerValue] = useState(totalPackingTimeSec);
+
+//   // Effect to reset timer when sequenceNumber changes
+//   useEffect(() => {
+//     if (currentSequenceOrders.length > 0) {
+//       setTimerValue(totalPackingTimeSec);
+//     }
+//   }, [sequenceNumber, totalPackingTimeSec, currentSequenceOrders.length]);
+
+//   // Countdown renderer
+//   const renderer = ({ hours, minutes, seconds, completed }) => {
+//     if (completed) {
+//       // Move to the next sequence when the timer completes
+//       if (sequenceNumber < Object.keys(groupedOrders).length - 1) {
+//         setSequenceNumber(sequenceNumber + 1);
+//       }
+//       return <span>Packing complete!</span>;
+//     } else {
+//       // Render the countdown timer
+//       return (
+//         <span>
+//           {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
+//           {String(seconds).padStart(2, "0")}
+//         </span>
+//       );
+//     }
+//   };
+
+//   return (
+//     <>
+//       <div className="container product_container">
+//         <div className="items">
+//           {currentSequenceOrders.map((order, index) => (
+//             <div key={index} className="card card-custom item">
+//               <img
+//                 className="card-img-top"
+//                 src={order.image_url}
+//                 alt="Card cap"
+//               />
+//               <div className="card-body">
+//                 <h5 className="card-title">1x 40x60 cm</h5>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </div>
+//       <div className="container ins_container">
+//         <div className="row ins_row">
+//           <div className="col-lg-6 ins">
+//             <div className="ins_section">
+//               <div className="ins_header">
+//                 <h1 className="instruction_heading">Specific instructions:</h1>
+//               </div>
+//               <div className="instruction_content">
+//                 <span>
+//                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+//                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+//                 </span>
+//               </div>
+//             </div>
+//           </div>
+//           <div className="col-lg-6 timer_counter">
+//             <div className="next_order_section">
+//               <div className="next_order_heading">
+//                 <h1 className="next_order_heading">TIME TILL NEXT ORDER</h1>
+//               </div>
+//               <div className="counter">
+//                 <Countdown
+//                   date={Date.now() + timerValue * 1000}
+//                   renderer={renderer}
+//                   key={sequenceNumber} // Reset countdown on sequence change
+//                 />
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
+
+
 import "./Product.css";
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import Countdown from 'react-countdown';
+import React, { useEffect, useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
+import Countdown from "react-countdown";
+import { OrderContext } from "../../OrderContext";
 
-function Product() {
-  const [timerValue, setTimerValue] = useState(280); // 180 seconds = 3 minutes
-  const [borderColor, setBorderColor] = useState('#000'); // Initial border color
+const Product = () => {
+  const { setCurrentOrderNumber } = useContext(OrderContext);
+  const [sequenceNumber, setSequenceNumber] = useState(0);
+  const location = useLocation();
+  const orders = location.state?.orders || [];
 
+  // Group orders by sequence
+  const groupedOrders = orders.reduce((acc, order) => {
+    if (!acc[order.sequence]) {
+      acc[order.sequence] = [];
+    }
+    acc[order.sequence].push(order);
+    return acc;
+  }, {});
+
+  // Get current sequence orders and total packing time
+  const currentSequenceOrders = groupedOrders[sequenceNumber + 1] || [];
+  const totalPackingTimeSec = currentSequenceOrders.reduce((total, order) => {
+    return total + parseInt(order.packing_time_sec, 10);
+  }, 0);
+
+  const [timerValue, setTimerValue] = useState(totalPackingTimeSec);
+
+  // Effect to reset timer when sequenceNumber changes
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimerValue(prevValue => prevValue - 1);
-    }, 1000);
+    if (currentSequenceOrders.length > 0) {
+      setTimerValue(totalPackingTimeSec);
+      setCurrentOrderNumber(currentSequenceOrders[0].order_number);
+    }
+  }, [sequenceNumber, totalPackingTimeSec, currentSequenceOrders.length, setCurrentOrderNumber, currentSequenceOrders]);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  const calculateRemainingTime = () => {
-    const minutes = Math.floor(timerValue / 60);
-    const seconds = timerValue % 60;
-    return { minutes, seconds };
-  };
-
-  const renderer = ({ minutes, seconds, completed }) => {
+  // Countdown renderer
+  const renderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
-      return <span className="time_counter">00:00</span>;
-    } else {
-      const { minutes: remainingMinutes } = calculateRemainingTime();
-
-      
-      if (remainingMinutes < 3) {
-        setBorderColor('#FF0000');
-      } else {
-        setBorderColor('#7AB915'); // Reset border color
+      // Move to the next sequence when the timer completes
+      if (sequenceNumber < Object.keys(groupedOrders).length - 1) {
+        setSequenceNumber(sequenceNumber + 1);
       }
-
+      return <span>Packing complete!</span>;
+    } else {
+      // Render the countdown timer
       return (
-        <span className="time_counter" style={{ borderColor }}>
-          {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
+        <span>
+          {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
+          {String(seconds).padStart(2, "0")}
         </span>
       );
     }
@@ -46,66 +165,18 @@ function Product() {
     <>
       <div className="container product_container">
         <div className="items">
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
+          {currentSequenceOrders.map((order, index) => (
+            <div key={index} className="card card-custom item">
+              <img
+                className="card-img-top"
+                src={order.image_url}
+                alt="Card cap"
+              />
+              <div className="card-body">
+                <h5 className="card-title">1x 40x60 cm</h5>
+              </div>
             </div>
-          </div>
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-            </div>
-          </div>
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-            </div>
-          </div>
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-            </div>
-          </div>
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-            </div>
-          </div>
-          <div className="card card-custom item">
-            <img
-              className="card-img-top"
-              src="https://s3-alpha-sig.figma.com/img/f361/0089/679bb310855961020557a9dceefe42df?Expires=1716768000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=GxnUvFDM3NhfCkZQTZXjFdCEjqs5Fo53I1ZIhJrWAKDeINLxS0DGArH9JW6HYFOSBFvBKzCoZCt5xzoZJ517ERbvSwqj1EMBCWJp6qT~rY1RMNVjxqnLilew7GKCyUzj3xNpHIjYs7YKJdsT6rvg9HtpnHCDwCKbaBFtYx91qlVDVK4~Ir~yQMd0khUW3FtrcJMnNqejqdidQDVmqKZ9nhuRaa4U-5bSJ-c7GecEj8877sYgK427zQm6KOuzFT0T-sYJmJh16b3kWCF32smp7~cht227vARzR3Yf72Chr~qS-DNYeSoJMREw6bys7bn~LNSlHwXG9v94wYI5cLXkQQ__"
-              alt="Card cap"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Card title</h5>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className="container ins_container">
@@ -117,8 +188,8 @@ function Product() {
               </div>
               <div className="instruction_content">
                 <span>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </span>
               </div>
             </div>
@@ -129,9 +200,10 @@ function Product() {
                 <h1 className="next_order_heading">TIME TILL NEXT ORDER</h1>
               </div>
               <div className="counter">
-              <Countdown
+                <Countdown
                   date={Date.now() + timerValue * 1000}
                   renderer={renderer}
+                  key={sequenceNumber} // Reset countdown on sequence change
                 />
               </div>
             </div>
@@ -140,6 +212,6 @@ function Product() {
       </div>
     </>
   );
-}
+};
 
-export default Product;
+export default Product;

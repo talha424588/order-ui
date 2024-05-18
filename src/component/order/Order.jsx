@@ -16,7 +16,7 @@ function Order() {
       }
     );
     const response = await result.json();
-    // navigate('/about', { state: { from: 'Home Page', userId: 123 } });
+    navigate('/product', { state: { orders: response } });
 
   }
   return (
@@ -25,8 +25,8 @@ function Order() {
         <div className="row">
           <div className="program_control">
 
-          {/* onClick={(e) => getOrders(e)} */}
-            <button type="button" >Pause / Start Autoprogram</button>
+          
+            <button type="button" onClick={(e) => getOrders(e)}>Pause / Start Autoprogram</button>
           </div>
         </div>
 

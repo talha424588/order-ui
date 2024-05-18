@@ -90,10 +90,18 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.card-title
+{
+  font-family: Inter;
+font-size: 16px;
+font-weight: 700;
+line-height: 19.36px;
+text-align: center;
+
+}
 
 
-
-/* @media (max-width: 750px) {
+@media (max-width: 750px) {
   .items {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 2fr));
@@ -131,4 +139,4 @@
     margin-bottom: 20px;;
   }
 
-} */
+}
