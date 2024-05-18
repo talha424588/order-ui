@@ -72,18 +72,37 @@
   justify-content: center;
   align-items: center;
   opacity: 1;
+  margin-bottom: 20px;;
 
 
 }
 .counter
 {
   margin-top: 20px;
+  border-color: #7AB915;
 }
+.counter.half-time {
+  /* border-color: #ff0000; */
+  font-weight: bold;
+  color: #000000;
+  border: 2px solid #ff0000;
+  border-radius: 3px;
+  font-size: 18px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px; 
+  margin-top: 20px;;
+  /* change border color when half time remains */
+}
+
 .counter span {
   font-size: 16px;
 }
 
-.counter span{
+.counter {
   font-weight: bold;
   color: #000000;
   border: 2px solid #7AB915;
@@ -95,6 +114,7 @@
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-top: 20px;;
 }
 .card-title
 {

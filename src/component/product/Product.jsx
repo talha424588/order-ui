@@ -37,18 +37,22 @@ const Product = () => {
 
   // Countdown renderer
   const renderer = ({ hours, minutes, seconds, completed }) => {
+    const halfTimeReached = hours * 3600 + minutes * 60 + seconds <= timerValue / 2;
+    const className = halfTimeReached ? "counter half-time" : "counter";
+  
     if (completed) {
       // Move to the next sequence when the timer completes
       if (sequenceNumber < Object.keys(groupedOrders).length - 1) {
         setSequenceNumber(sequenceNumber + 1);
       }
-      return <span>Packing complete!</span>;
+      return <span className={className}>Packing complete!</span>;
     } else {
       // Render the countdown timer
       return (
-        <span>
-          {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
-          {String(seconds).padStart(2, "0")}
+        <span className={className}>
+          {/* {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:
+          {String(seconds).padStart(2, "0")} */}
+          {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
         </span>
       );
     }
@@ -93,7 +97,14 @@ const Product = () => {
               <div className="next_order_heading">
                 <h1 className="next_order_heading">TIME TILL NEXT ORDER</h1>
               </div>
-              <div className="counter">
+              {/* <div className="counter">
+                <Countdown
+                  date={Date.now() + timerValue * 1000}
+                  renderer={renderer}
+                  key={sequenceNumber} // Reset countdown on sequence change
+                />
+              </div> */}
+              <div className={renderer.className}>
                 <Countdown
                   date={Date.now() + timerValue * 1000}
                   renderer={renderer}
