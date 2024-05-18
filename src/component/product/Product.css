@@ -11,8 +11,15 @@
     height: calc(100vh - 120px);
 }
 
+/* .product_container {
+  width: 60% !important;
+} */
 .product_container {
   width: 60% !important;
+  margin: auto; /* Center the container horizontally */
+  display: flex;
+  justify-content: start;
+  align-items: center; /* Center the items vertically */
 }
 
 .card-custom {
@@ -23,7 +30,9 @@
 .items {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(4, minmax(20px, 1fr));
+  grid-template-columns: repeat(4, minmax(142.86px, 1fr));
+  max-width: 142.86px;
+  width: 100%;
 }
 
 
