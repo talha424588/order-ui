@@ -3,6 +3,13 @@
   margin: 0;
   box-sizing: border-box;
 }
+.product_parent
+{
+  display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: calc(100vh - 120px);
+}
 
 .product_container {
   width: 60% !important;
@@ -19,7 +26,6 @@
   grid-template-columns: repeat(4, minmax(20px, 1fr));
 }
 
-/* ins_container */
 
 .ins_container {
   margin-top: 50px;

@@ -1,35 +1,3 @@
-/* .program_control button {
-    background-color: #D9D9D9;
-    width: 396px;
-    height: 60px;
-    top: 300px;
-    left: 410px;
-    gap: 0px;
-    opacity: 0px;
-    border: none;
-    outline: none;
-    font-family: Inter;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 29.05px;
-    text-align: center;
-    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 12px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-.switch_order button {
-    margin-top: 146px;
-    width: 396px;
-    height: 60px;
-    top: 446px;
-    left: 222px;
-    gap: 0px;
-    opacity: 0px;
-    background-color: #555555;
-    box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.2), 0 12px 20px 0 rgba(0, 0, 0, 0.19);
-    color: white;
-    border: none;
-    outline: none;
-} */
 
 * {
     padding: 0;
@@ -43,13 +11,14 @@
     justify-content: center;
     align-items: center;
     height: 80vh;
+    gap: 30px;;
 }
 
 .row {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
 }
 
 .program_control button {
