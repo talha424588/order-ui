@@ -1,12 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import "./Order.css";
+import { useContext, useEffect } from "react";
+import { OrderContext } from "../../OrderContext";
+
 function Order() {
   const navigate = useNavigate();
-  async function getOrders(e) {
-    e.preventDefault();
-    const result = await fetch(
-      `https://sheetdb.io/api/v1/dvb7xxssna89k`,
+  const { setOrders, currentSequenceNumber, setCurrentSequenceNumber } = useContext(OrderContext);
 
+  async function fetchOrders() {
+    const result = await fetch(
+      "https://sheetdb.io/api/v1/dvb7xxssna89k",
       {
         method: "GET",
         headers: {
@@ -16,28 +19,54 @@ function Order() {
       }
     );
     const response = await result.json();
-    navigate('/product', { state: { orders: response } });
-
+    setOrders(response);
   }
+
+  useEffect(() => {
+    fetchOrders();
+
+    const interval = setInterval(() => {
+      fetchOrders();
+    }, 3600000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  function handleStartProgram(e) {
+    e.preventDefault();
+    navigate('/product', { state: { sequenceNumber: 0 } });
+  }
+
+  function handlePreviousOrder() {
+    if (currentSequenceNumber > 0) {
+      setCurrentSequenceNumber(currentSequenceNumber - 1);
+      navigate('/product', { state: { sequenceNumber: currentSequenceNumber - 1 } });
+    }
+  }
+
+  function handleNextOrder() {
+    setCurrentSequenceNumber(currentSequenceNumber + 1);
+    navigate('/product', { state: { sequenceNumber: currentSequenceNumber + 1 } });
+  }
+
   return (
     <>
       <div className="container order_container">
         <div className="row">
           <div className="program_control">
-
-          
-            <button type="button" onClick={(e) => getOrders(e)}>Pause / Start Autoprogram</button>
+            <button type="button" onClick={handleStartProgram}>Pause / Start Autoprogram</button>
           </div>
         </div>
 
         <div className="row">
           <div className="switch_order">
-            <button>Previous Order</button>
-            <button>Next Order</button>
+            <button onClick={handlePreviousOrder}>Previous Order</button>
+            <button onClick={handleNextOrder}>Next Order</button>
           </div>
         </div>
       </div>
     </>
   );
 }
-export default Order;
+
+export default Order;

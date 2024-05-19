@@ -1,3 +1,4 @@
+
 import "./Product.css";
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -6,19 +7,24 @@ import { OrderContext } from "../../OrderContext";
 import { IoSettingsOutline } from "react-icons/io5";
 
 const Product = () => {
-  const navigate = new useNavigate();
-  const { setCurrentOrderNumber,setCurrentSequenceNumber,currentSequenceNumber } = useContext(OrderContext);
-  const [sequenceNumber, setSequenceNumber] = useState(0);
+  const navigate = useNavigate();
+  const { setCurrentOrderNumber, setCurrentSequenceNumber, currentSequenceNumber, orders } = useContext(OrderContext);
+  const [sequenceNumber, setSequenceNumber] = useState(currentSequenceNumber);
   const location = useLocation();
-  const orders = location.state?.orders || [];
+  const initialOrders = location.state?.orders || orders;
 
-  function handleSettingsClick()
-  {
-    navigate("/")
+  useEffect(() => {
+    if (initialOrders.length > 0) {
+      setCurrentSequenceNumber(sequenceNumber);
+    }
+  }, [initialOrders, sequenceNumber, setCurrentSequenceNumber]);
+
+  function handleSettingsClick() {
+    navigate("/");
   }
 
   // Group orders by sequence
-  const groupedOrders = orders.reduce((acc, order) => {
+  const groupedOrders = initialOrders.reduce((acc, order) => {
     if (!acc[order.sequence]) {
       acc[order.sequence] = [];
     }
@@ -40,18 +46,11 @@ const Product = () => {
       setTimerValue(totalPackingTimeSec);
       setCurrentOrderNumber(currentSequenceOrders[0].order_number);
     }
-  }, [
-    sequenceNumber,
-    totalPackingTimeSec,
-    currentSequenceOrders.length,
-    setCurrentOrderNumber,
-    currentSequenceOrders,
-  ]);
+  }, [sequenceNumber, totalPackingTimeSec, currentSequenceOrders.length, setCurrentOrderNumber, currentSequenceOrders]);
 
   // Countdown renderer
   const renderer = ({ hours, minutes, seconds, completed }) => {
-    const halfTimeReached =
-      hours * 3600 + minutes * 60 + seconds <= timerValue / 2;
+    const halfTimeReached = hours * 3600 + minutes * 60 + seconds <= timerValue / 2;
     const className = halfTimeReached ? "counter half-time" : "counter";
 
     if (completed) {
@@ -70,22 +69,13 @@ const Product = () => {
 
   return (
     <div className="product_parent">
-      <div
-        className="container product_container"
-        style={{
-          width: currentSequenceOrders.length > 4 ? "639.33px" : "940.05px",
-        }}
-      >
+      <div className="container product_container" style={{ width: currentSequenceOrders.length > 4 ? "639.33px" : "940.05px" }}>
         <div className="items">
           {currentSequenceOrders.map((order, index) => (
             <div key={index} className="card card-custom item">
-              <img
-                className="card-img-top"
-                src={order.image_url}
-                alt="Card cap"
-              />
+              <img className="card-img-top" src={order.image_url} alt="Card cap" />
               <div className="card-body">
-                <h5 className="card-title">1x 40x60 cm</h5>
+                <h5 className="card-title">1x {order.size}</h5>
               </div>
             </div>
           ))}
@@ -99,10 +89,7 @@ const Product = () => {
                 <h1 className="instruction_heading">Specific instructions:</h1>
               </div>
               <div className="instruction_content">
-                <span>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                </span>
+                <span>{currentSequenceOrders[0]?.Instructions || "No specific instructions"}</span>
               </div>
             </div>
           </div>
@@ -112,15 +99,11 @@ const Product = () => {
                 <h1 className="next_order_heading">TIME TILL NEXT ORDER</h1>
               </div>
               <div className={renderer.className}>
-                <Countdown
-                  date={Date.now() + timerValue * 1000}
-                  renderer={renderer}
-                  key={sequenceNumber}
-                />
+                <Countdown date={Date.now() + timerValue * 1000} renderer={renderer} key={sequenceNumber} />
               </div>
             </div>
             <div className="navigator">
-              <span className="setting-icon" onClick={()=>handleSettingsClick()}><IoSettingsOutline /></span>
+              <span className="setting-icon" onClick={handleSettingsClick}><IoSettingsOutline /></span>
             </div>
           </div>
         </div>
@@ -129,4 +112,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Product;
