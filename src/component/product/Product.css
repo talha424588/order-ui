@@ -3,12 +3,12 @@
   margin: 0;
   box-sizing: border-box;
 }
-.product_parent
-{
+
+.product_parent {
   display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: calc(100vh - 120px);
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 120px);
 }
 
 /* .product_container {
@@ -42,8 +42,8 @@
   align-items: center;
   flex-wrap: wrap;
 }
-.item
-{
+
+.item {
   /* max-width: 210.05px;
   width: 100%; */
   width: calc(25% - 30px);
@@ -86,8 +86,7 @@
 
 
 /* Time Counter */
-.next_order_heading h1
-{
+.next_order_heading h1 {
   font-family: Inter;
   font-size: 24px;
   font-weight: 700;
@@ -97,15 +96,17 @@
   justify-content: center;
   align-items: center;
   opacity: 1;
-  margin-bottom: 20px;;
+  margin-bottom: 20px;
+  ;
 
 
 }
-.counter
-{
+
+.counter {
   margin-top: 20px;
   border-color: #7AB915;
 }
+
 .counter.half-time {
   /* border-color: #ff0000; */
   font-weight: bold;
@@ -118,8 +119,9 @@
   padding-left: 30px;
   padding-right: 30px;
   padding-top: 10px;
-  padding-bottom: 10px; 
-  margin-top: 20px;;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  ;
   /* change border color when half time remains */
 }
 
@@ -139,31 +141,56 @@
   padding-right: 30px;
   padding-top: 10px;
   padding-bottom: 10px;
-  margin-top: 20px;;
+  margin-top: 20px;
+  ;
 }
-.card-title
-{
+
+.card-title {
   font-family: Inter;
-font-size: 16px;
-font-weight: 700;
-line-height: 19.36px;
-text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 19.36px;
+  text-align: center;
 
 }
 
+.timer_counter {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.navigator {
+  position: relative;
+  margin-top: 20px;
+}
+
+.setting-icon {
+  position: absolute;
+  left: 100px;
+  top: -8px;
+
+}
+
+.setting-icon svg {
+  font-size: 2rem;
+  /* Adjust this value to increase the size */
+  cursor: pointer;
+}
 
 @media (max-width: 750px) {
   .items {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 2fr));
   }
-  .ins
-  {
+
+  .ins {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
   }
-  .ins h1{
+
+  .ins h1 {
     text-align: center;
     margin-left: -40px;
   }
@@ -175,19 +202,21 @@ text-align: center;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 2fr));
   }
-  .ins
-  {
+
+  .ins {
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
   }
-  .ins h1{
+
+  .ins h1 {
     text-align: center;
     margin-left: -40px;
   }
-  .timer_counter
-  {
-    margin-bottom: 20px;;
+
+  .timer_counter {
+    margin-bottom: 20px;
+    ;
   }
 
 }
