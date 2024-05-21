@@ -1,10 +1,9 @@
 
-import "./Product.css";
-import React, { useEffect, useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import Countdown from "react-countdown";
+import { useLocation, useNavigate } from "react-router-dom";
 import { OrderContext } from "../../OrderContext";
-import { IoSettingsOutline } from "react-icons/io5";
+import "./Product.css";
 
 const Product = () => {
   const navigate = useNavigate();
@@ -102,9 +101,9 @@ const Product = () => {
                 <Countdown date={Date.now() + timerValue * 1000} renderer={renderer} key={sequenceNumber} />
               </div>
             </div>
-            <div className="navigator">
+            {/* <div className="navigator">
               <span className="setting-icon" onClick={handleSettingsClick}><IoSettingsOutline /></span>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
