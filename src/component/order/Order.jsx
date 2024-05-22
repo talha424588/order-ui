@@ -9,7 +9,7 @@ function Order() {
 
   async function fetchOrders() {
     const result = await fetch(
-      "https://sheetdb.io/api/v1/dvb7xxssna89k",
+      "https://sheetdb.io/api/v1/tyb2c31tf86n8",
       {
         method: "GET",
         headers: {
